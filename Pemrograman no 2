@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Fungsi untuk cek huruf vokal (pakai array)
+bool isVowel(char c) {
+    c = tolower(c);
+    char vokal[] = {'a', 'i', 'u', 'e', 'o'};
+    for (char v : vokal) {
+        if (c == v) return true;
+    }
+    return false;
+}
+
+// Fungsi manual reverse (pakai while loop)
+string manualReverse(string s) {
+    int left = 0, right = s.length() - 1;
+    while (left < right) {
+        swap(s[left], s[right]);
+        left++;
+        right--;
+    }
+    return s;
+}
+
+// Fungsi enkripsi (modifikasi)
+string encrypt(string word) {
+    if (word.empty()) return "";
+
+    // 1. Buang vokal
+    string noVowel = "";
+    for (char c : word) {
+        if (!isVowel(c)) noVowel += c;
+    }
+
+    // 2. Sisipkan ASCII huruf pertama ke tengah dulu
+    int asciiVal = (int)word[0];
+    string asciiStr = to_string(asciiVal);
+
+    int mid = noVowel.length() / 2;
+    string mixed = noVowel.substr(0, mid) + asciiStr + noVowel.substr(mid);
+
+    // 3. Balik string hasilnya
+    string password = manualReverse(mixed);
+
+    return password;
+}
+
+int main() {
+    string input;
+    cout << "Masukkan kata: ";
+    cin >> input;
+
+    string hasil = encrypt(input);
+    cout << "Password hasil enkripsi: " << hasil << endl;
+
+    return 0;
+}
